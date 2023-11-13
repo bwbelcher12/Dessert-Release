@@ -29,6 +29,7 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 
 /*
  * View model of Dessert Release components
@@ -54,8 +55,9 @@ class DessertReleaseViewModel(
      * save the selection in DataStore through [userPreferencesRepository]
      */
     fun selectLayout(isLinearLayout: Boolean) {
-        _uiState.value = DessertReleaseUiState(isLinearLayout)
-    }
+        viewModelScope.launch {
+            userPreferencesRepository.saveLayoutPreference(isLinearLayout)
+        }    }
 
     companion object {
         val Factory: ViewModelProvider.Factory = viewModelFactory {
